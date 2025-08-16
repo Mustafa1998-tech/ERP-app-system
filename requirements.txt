@@ -7,7 +7,7 @@ psycopg2-binary==2.9.9
 reportlab==4.0.4
 pandas==2.0.3
 numpy==1.24.4
-django-on-heroku==0.3.1
+django-on-heroku==1.1.2
 python-dotenv==1.0.0
 django-anymail[mailgun]==9.1.0
 

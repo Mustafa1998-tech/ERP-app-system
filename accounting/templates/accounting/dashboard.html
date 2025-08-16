@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}Accounting Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Accounting Dashboard</h1>
+        <div class="btn-group">
+            <a href="{% url 'accounting:ledger_create' %}" class="btn btn-primary">
+                <i class="bi bi-journal-plus"></i> New Ledger
+            </a>
+            <a href="{% url 'accounting:transaction_create' %}" class="btn btn-success ms-2">
+                <i class="bi bi-cash-coin"></i> New Transaction
+            </a>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Total Ledgers</h5>
+                            <h2 class="mb-0">{{ total_ledgers }}</h2>
+                        </div>
+                        <i class="bi bi-journal-text" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <a href="{% url 'accounting:ledgers_list' %}" class="stretched-link text-white text-decoration-none"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Total Transactions</h5>
+                            <h2 class="mb-0">{{ total_transactions }}</h2>
+                        </div>
+                        <i class="bi bi-arrow-left-right" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <a href="{% url 'accounting:transactions_list' %}" class="stretched-link text-white text-decoration-none"></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="card-title">Reports Generated</h5>
+                            <h2 class="mb-0">{{ total_reports }}</h2>
+                        </div>
+                        <i class="bi bi-file-earmark-bar-graph" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <a href="{% url 'accounting:reports_list' %}" class="stretched-link text-white text-decoration-none"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity and Quick Actions -->
+    <div class="row">
+        <!-- Recent Transactions -->
+        <div class="col-lg-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Transactions</h5>
+                    <a href="{% url 'accounting:transactions_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    {% if recent_transactions %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for transaction in recent_transactions %}
+                                    <tr>
+                                        <td>{{ transaction.date|date:"M d, Y" }}</td>
+                                        <td>{{ transaction.description|truncatechars:30 }}</td>
+                                        <td class="{% if transaction.amount < 0 %}text-danger{% else %}text-success{% endif %}">
+                                            {{ transaction.amount|floatformat:2 }}
+                                        </td>
+                                        <td>
+                                            <span class="badge {% if transaction.status == 'completed' %}bg-success{% else %}bg-warning{% endif %}">
+                                                {{ transaction.get_status_display }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-currency-exchange" style="font-size: 2rem; color: #6c757d;"></i>
+                            <p class="text-muted mt-2">No recent transactions found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'accounting:ledger_create' %}" class="btn btn-outline-primary text-start">
+                            <i class="bi bi-journal-plus me-2"></i> Create New Ledger
+                        </a>
+                        <a href="{% url 'accounting:transaction_create' %}" class="btn btn-outline-success text-start">
+                            <i class="bi bi-cash-coin me-2"></i> Record New Transaction
+                        </a>
+                        <a href="{% url 'accounting:report_create' %}" class="btn btn-outline-info text-start">
+                            <i class="bi bi-file-earmark-bar-graph me-2"></i> Generate Report
+                        </a>
+                        <a href="{% url 'accounting:reports_list' %}" class="btn btn-outline-secondary text-start">
+                            <i class="bi bi-archive me-2"></i> View All Reports
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+<style>
+    .card {
+        border: none;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        transition: transform 0.2s ease-in-out;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+    }
+    
+    .card-title {
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .card h2 {
+        font-weight: 700;
+    }
+    
+    .table th {
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #6c757d;
+    }
+    
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn i {
+        margin-right: 0.5rem;
+    }
+</style>
+{% endblock %}

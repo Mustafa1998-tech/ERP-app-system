@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Sales Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Sales Dashboard</h2>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Customers</h5>
+                    <h2 class="card-text">{{ customers_count|default:0 }}</h2>
+                    <a href="{% url 'sales:customers_list' %}" class="text-white">View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Orders</h5>
+                    <h2 class="card-text">{{ orders_count|default:0 }}</h2>
+                    <a href="{% url 'sales:orders_list' %}" class="text-white">View All</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Invoices</h5>
+                    <h2 class="card-text">{{ invoices_count|default:0 }}</h2>
+                    <a href="{% url 'sales:invoices_list' %}" class="text-white">View All</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'sales:customer_create' %}" class="btn btn-outline-primary">Add New Customer</a>
+                        <a href="{% url 'sales:order_create' %}" class="btn btn-outline-success">Create New Order</a>
+                        <a href="{% url 'sales:invoice_create' %}" class="btn btn-outline-info">Generate Invoice</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Activities</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">No recent activities</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

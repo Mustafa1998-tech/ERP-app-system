@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: erp-project
+    env: python
+    buildCommand: "pip install -r requirements.txt && python manage.py migrate"
+    startCommand: "gunicorn erp_project.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DEBUG
+        value: 'False'
+      - key: DISABLE_COLLECTSTATIC
+        value: '1'  # Disable collectstatic during build
+    plan: free
+    numInstances: 1
+    healthCheckPath: /
+    autoDeploy: true

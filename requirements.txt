@@ -1,3 +1,9 @@
+# Build tools
+pip>=25.2
+setuptools>=68.0
+wheel>=0.40.0
+
+# Main dependencies
 Django==4.2.7
 python-decouple==3.8
 dj-database-url==2.1.0

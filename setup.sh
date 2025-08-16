@@ -14,8 +14,8 @@ python3.11 -m venv /opt/render/project/venv
 # Activate the virtual environment
 source /opt/render/project/venv/bin/activate
 
-# Upgrade pip
-python -m pip install --upgrade pip
+# Upgrade pip and setuptools
+python -m pip install --upgrade pip setuptools wheel
 
 # Install dependencies
 pip install -r requirements.txt
